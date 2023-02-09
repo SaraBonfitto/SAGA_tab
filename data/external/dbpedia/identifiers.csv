@@ -1,0 +1,10 @@
+dbo:Film, dbo:title
+dbo:CreativeWork, dbo:title
+dbo:TelevisionShow, dbo:title
+dbo:Person, dbo:birthName
+dbo:Actor, dbo:birthName
+dbo:Director, dbo:birthName
+dbo:ProductionCompany, dbo:tradingName
+dbo:City, dbo:cityName
+dbo:Country, dbo:countryName
+dbo:Location, dbo:locationName

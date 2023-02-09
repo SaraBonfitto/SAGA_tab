@@ -1,0 +1,841 @@
+@prefix : <http://www.area.it/area#> .
+@prefix ns0: <http://www.area.it/area#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.area.it/area> .
+
+<http://www.area.it/area> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.area.it/area#additional_information
+ns0:additional_information rdf:type owl:ObjectProperty ;
+                           rdfs:domain <http://www.area.it/are#Subject> ;
+                           rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#administrative_headquarters
+ns0:administrative_headquarters rdf:type owl:ObjectProperty ;
+                                rdfs:domain ns0:Company ;
+                                rdfs:range ns0:Address .
+
+
+###  http://www.area.it/area#bankruptcy_trustee
+ns0:bankruptcy_trustee rdf:type owl:ObjectProperty ;
+                       rdfs:domain <http://www.area.it/are#Subject> ;
+                       rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#building_manager
+ns0:building_manager rdf:type owl:ObjectProperty ;
+                     rdfs:domain <http://www.area.it/are#Subject> ;
+                     rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#co-debtors
+ns0:co-debtors rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf owl:topObjectProperty ;
+               rdfs:domain <http://www.area.it/are#Subject> ;
+               rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#co-obligors
+ns0:co-obligors rdf:type owl:ObjectProperty ;
+                rdfs:domain <http://www.area.it/are#Subject> ;
+                rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#domicile
+ns0:domicile rdf:type owl:ObjectProperty ;
+             rdfs:domain ns0:Person ;
+             rdfs:range ns0:Address .
+
+
+###  http://www.area.it/area#driver
+ns0:driver rdf:type owl:ObjectProperty ;
+           rdfs:domain <http://www.area.it/are#Subject> ;
+           rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#element
+ns0:element rdf:type owl:ObjectProperty ;
+            rdfs:domain ns0:Invoice ;
+            rdfs:range ns0:Credit .
+
+
+###  http://www.area.it/area#heir
+ns0:heir rdf:type owl:ObjectProperty ;
+         rdfs:range ns0:Invoice .
+
+
+###  http://www.area.it/area#heir_of
+ns0:heir_of rdf:type owl:ObjectProperty ;
+            rdfs:domain <http://www.area.it/are#Subject> ;
+            rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#holder
+ns0:holder rdf:type owl:ObjectProperty ;
+           rdfs:domain ns0:Person ;
+           rdfs:range ns0:Invoice .
+
+
+###  http://www.area.it/area#in
+ns0:in rdf:type owl:ObjectProperty ;
+       rdfs:domain ns0:Address ;
+       rdfs:range ns0:City .
+
+
+###  http://www.area.it/area#includes
+ns0:includes rdf:type owl:ObjectProperty ;
+             rdfs:domain ns0:Workload ;
+             rdfs:range ns0:Invoice .
+
+
+###  http://www.area.it/area#invoice_type
+ns0:invoice_type rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf owl:topObjectProperty ;
+                 rdfs:domain ns0:Contract ,
+                             ns0:Invoice ;
+                 rdfs:range ns0:InvoiceType .
+
+
+###  http://www.area.it/area#judicial_commissioner
+ns0:judicial_commissioner rdf:type owl:ObjectProperty ;
+                          rdfs:domain <http://www.area.it/are#Subject> ;
+                          rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#legal_representative
+ns0:legal_representative rdf:type owl:ObjectProperty ;
+                         rdfs:domain <http://www.area.it/are#Subject> ;
+                         rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#liquidator
+ns0:liquidator rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf owl:topObjectProperty ;
+               rdfs:domain <http://www.area.it/are#Subject> ;
+               rdfs:range <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#managed_by
+ns0:managed_by rdf:type owl:ObjectProperty ;
+               rdfs:domain ns0:Workload ;
+               rdfs:range ns0:Authority .
+
+
+###  http://www.area.it/area#owner
+ns0:owner rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty ;
+          rdfs:domain ns0:Company ;
+          rdfs:range ns0:Invoice .
+
+
+###  http://www.area.it/area#registered_office
+ns0:registered_office rdf:type owl:ObjectProperty ;
+                      rdfs:domain ns0:Company ;
+                      rdfs:range ns0:Address .
+
+
+###  http://www.area.it/area#residential
+ns0:residential rdf:type owl:ObjectProperty ;
+                rdfs:domain ns0:Person ;
+                rdfs:range ns0:Address .
+
+
+###  http://www.area.it/area#unique_manager
+ns0:unique_manager rdf:type owl:ObjectProperty ;
+                   rdfs:domain <http://www.area.it/are#Subject> ;
+                   rdfs:range <http://www.area.it/are#Subject> .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.area.it/area#SSN
+ns0:SSN rdf:type owl:DatatypeProperty ;
+        rdfs:domain ns0:Company ,
+                    ns0:Person ;
+        rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#VAT
+ns0:VAT rdf:type owl:DatatypeProperty ;
+        rdfs:domain ns0:Company ;
+        rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#ZIP
+ns0:ZIP rdf:type owl:DatatypeProperty ;
+        rdfs:domain ns0:Address ;
+        rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#additional_info
+ns0:additional_info rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:Contract ,
+                                ns0:Invoice ;
+                    rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#administrative_penalty
+ns0:administrative_penalty rdf:type owl:DatatypeProperty ;
+                           rdfs:domain ns0:Credit ;
+                           rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#aggravated_by_night
+ns0:aggravated_by_night rdf:type owl:DatatypeProperty ;
+                        rdfs:domain ns0:Credit ;
+                        rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#allowance
+ns0:allowance rdf:type owl:DatatypeProperty ;
+              rdfs:domain ns0:Credit ;
+              rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#allowance_from_ticket
+ns0:allowance_from_ticket rdf:type owl:DatatypeProperty ;
+                          rdfs:domain ns0:Credit ;
+                          rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#amount
+ns0:amount rdf:type owl:DatatypeProperty ;
+           rdfs:domain ns0:Invoice ;
+           rdfs:range xsd:decimal .
+
+
+###  http://www.area.it/area#apt_number
+ns0:apt_number rdf:type owl:DatatypeProperty ;
+               rdfs:domain ns0:Address ;
+               rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#before_5_days_discount
+ns0:before_5_days_discount rdf:type owl:DatatypeProperty ;
+                           rdfs:domain ns0:Credit ;
+                           rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#birth_municipality
+ns0:birth_municipality rdf:type owl:DatatypeProperty ;
+                       rdfs:domain ns0:Person ;
+                       rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#cadastre_code
+ns0:cadastre_code rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Contract ,
+                              ns0:Invoice ;
+                  rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#certified_email
+ns0:certified_email rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:Company ,
+                                ns0:Person ;
+                    rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#code
+ns0:code rdf:type owl:DatatypeProperty ;
+         rdfs:domain ns0:Contract ;
+         rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#collection_rights
+ns0:collection_rights rdf:type owl:DatatypeProperty ;
+                      rdfs:domain ns0:Credit ;
+                      rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#company_name
+ns0:company_name rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Company ;
+                 rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#contract_type
+ns0:contract_type rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Contract ;
+                  rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#country
+ns0:country rdf:type owl:DatatypeProperty ;
+            rdfs:domain ns0:City ;
+            rdfs:range xsd:integer .
+
+
+###  http://www.area.it/area#country_code
+ns0:country_code rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:City ;
+                 rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#country_of_birth
+ns0:country_of_birth rdf:type owl:DatatypeProperty ;
+                     rdfs:domain ns0:Person ;
+                     rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#date
+ns0:date rdf:type owl:DatatypeProperty ;
+         rdfs:domain ns0:Contract ,
+                     ns0:Workload ;
+         rdfs:range xsd:dateTime .
+
+
+###  http://www.area.it/area#date_of_birth
+ns0:date_of_birth rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Person ;
+                  rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#death
+ns0:death rdf:type owl:DatatypeProperty ;
+          rdfs:domain ns0:Person ;
+          rdfs:range xsd:boolean .
+
+
+###  http://www.area.it/area#death_date
+ns0:death_date rdf:type owl:DatatypeProperty ;
+               rdfs:domain ns0:Person ;
+               rdfs:range xsd:dateTime .
+
+
+###  http://www.area.it/area#delete
+ns0:delete rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf owl:topDataProperty ;
+           rdfs:domain ns0:General ;
+           rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#description
+ns0:description rdf:type owl:DatatypeProperty ;
+                rdfs:domain ns0:Invoice ,
+                            ns0:Workload ;
+                rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#document_number
+ns0:document_number rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:Contract ,
+                                ns0:Invoice ;
+                    rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#document_year
+ns0:document_year rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Contract ,
+                              ns0:Invoice ;
+                  rdfs:range xsd:integer .
+
+
+###  http://www.area.it/area#eca_meca_iva
+ns0:eca_meca_iva rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Credit ;
+                 rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#email
+ns0:email rdf:type owl:DatatypeProperty ;
+          rdfs:domain ns0:Company ,
+                      ns0:Person ;
+          rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#emission_date
+ns0:emission_date rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Contract ,
+                              ns0:Invoice ;
+                  rdfs:range xsd:dateTime .
+
+
+###  http://www.area.it/area#entrusted_amount
+ns0:entrusted_amount rdf:type owl:DatatypeProperty ;
+                     rdfs:domain ns0:Workload ;
+                     rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#expiration_date
+ns0:expiration_date rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:Contract ,
+                                ns0:Invoice ;
+                    rdfs:range xsd:dateTime .
+
+
+###  http://www.area.it/area#floor
+ns0:floor rdf:type owl:DatatypeProperty ;
+          rdfs:domain ns0:Address ;
+          rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#gender
+ns0:gender rdf:type owl:DatatypeProperty ;
+           rdfs:domain ns0:Person ;
+           rdfs:range xsd:boolean .
+
+
+###  http://www.area.it/area#id_invoice
+ns0:id_invoice rdf:type owl:DatatypeProperty ;
+               rdfs:domain ns0:Contract ,
+                           ns0:Invoice ;
+               rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#id_number
+ns0:id_number rdf:type owl:DatatypeProperty ;
+              rdfs:domain ns0:Contract ;
+              rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#invoice_number
+ns0:invoice_number rdf:type owl:DatatypeProperty ;
+                   rdfs:domain ns0:Contract ,
+                               ns0:Invoice ;
+                   rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#invoice_type
+ns0:invoice_type rdf:type owl:DatatypeProperty ;
+                 rdfs:range [ rdf:type rdfs:Datatype ;
+                              owl:oneOf [ rdf:type rdf:List ;
+                                          rdf:first "ACCERTAMENTO" ;
+                                          rdf:rest [ rdf:type rdf:List ;
+                                                     rdf:first "ACCERTAMENTO_ESECUTIVO" ;
+                                                     rdf:rest [ rdf:type rdf:List ;
+                                                                rdf:first "AVVISO" ;
+                                                                rdf:rest [ rdf:type rdf:List ;
+                                                                           rdf:first "AVVISO_GENERICO" ;
+                                                                           rdf:rest [ rdf:type rdf:List ;
+                                                                                      rdf:first "AVVISO_PAGAMENTO" ;
+                                                                                      rdf:rest [ rdf:type rdf:List ;
+                                                                                                 rdf:first "BOLLETTA" ;
+                                                                                                 rdf:rest [ rdf:type rdf:List ;
+                                                                                                            rdf:first "FATTURA" ;
+                                                                                                            rdf:rest [ rdf:type rdf:List ;
+                                                                                                                       rdf:first "INGIUNZIONE" ;
+                                                                                                                       rdf:rest [ rdf:type rdf:List ;
+                                                                                                                                  rdf:first "ORDINANZA_GDP" ;
+                                                                                                                                  rdf:rest [ rdf:type rdf:List ;
+                                                                                                                                             rdf:first "ORDINANZA_INGIUNTIVA" ;
+                                                                                                                                             rdf:rest [ rdf:type rdf:List ;
+                                                                                                                                                        rdf:first "VERBALI" ;
+                                                                                                                                                        rdf:rest [ rdf:type rdf:List ;
+                                                                                                                                                                   rdf:first "VERBALI_ESTERI" ;
+                                                                                                                                                                   rdf:rest [ rdf:type rdf:List ;
+                                                                                                                                                                              rdf:first "contract" ;
+                                                                                                                                                                              rdf:rest rdf:nil
+                                                                                                                                                                            ]
+                                                                                                                                                                 ]
+                                                                                                                                                      ]
+                                                                                                                                           ]
+                                                                                                                                ]
+                                                                                                                     ]
+                                                                                                          ]
+                                                                                               ]
+                                                                                    ]
+                                                                         ]
+                                                              ]
+                                                   ]
+                                        ]
+                            ] .
+
+
+###  http://www.area.it/area#invoice_type_detail
+ns0:invoice_type_detail rdf:type owl:DatatypeProperty ;
+                        rdfs:domain ns0:InvoiceType ;
+                        rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#invoice_type_id
+ns0:invoice_type_id rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:InvoiceType ;
+                    rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#law_increase
+ns0:law_increase rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Credit ;
+                 rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#legal_interest
+ns0:legal_interest rdf:type owl:DatatypeProperty ;
+                   rdfs:domain ns0:Credit ;
+                   rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#manager
+ns0:manager rdf:type owl:DatatypeProperty ;
+            rdfs:domain ns0:Workload ;
+            rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#minimum
+ns0:minimum rdf:type owl:DatatypeProperty ;
+            rdfs:domain ns0:Credit ;
+            rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#mq
+ns0:mq rdf:type owl:DatatypeProperty ;
+       rdfs:domain ns0:Contract ;
+       rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#municipality
+ns0:municipality rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:City ;
+                 rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#name
+ns0:name rdf:type owl:DatatypeProperty ;
+         rdfs:domain ns0:Person ;
+         rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#notification_costs
+ns0:notification_costs rdf:type owl:DatatypeProperty ;
+                       rdfs:domain ns0:Credit ;
+                       rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#notification_date
+ns0:notification_date rdf:type owl:DatatypeProperty ;
+                      rdfs:domain ns0:Contract ,
+                                  ns0:Invoice ;
+                      rdfs:range xsd:dateTime .
+
+
+###  http://www.area.it/area#number_of_invoices
+ns0:number_of_invoices rdf:type owl:DatatypeProperty ;
+                       rdfs:domain ns0:Workload ;
+                       rdfs:range xsd:integer .
+
+
+###  http://www.area.it/area#occupant_number
+ns0:occupant_number rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:Contract ;
+                    rdfs:range xsd:integer .
+
+
+###  http://www.area.it/area#omitted_deposit
+ns0:omitted_deposit rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:Credit ;
+                    rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#ordinance_lc
+ns0:ordinance_lc rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Credit ;
+                 rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#over_60_days
+ns0:over_60_days rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Credit ;
+                 rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#payed_amount
+ns0:payed_amount rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Credit ;
+                 rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#payed_amount_lc
+ns0:payed_amount_lc rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:Contract ,
+                                ns0:Invoice ;
+                    rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#pdr_costs
+ns0:pdr_costs rdf:type owl:DatatypeProperty ;
+              rdfs:domain ns0:Credit ;
+              rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#penalty
+ns0:penalty rdf:type owl:DatatypeProperty ;
+            rdfs:domain ns0:Credit ;
+            rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#phone
+ns0:phone rdf:type owl:DatatypeProperty ;
+          rdfs:domain ns0:Company ,
+                      ns0:Person ;
+          rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#plate
+ns0:plate rdf:type owl:DatatypeProperty ;
+          rdfs:domain ns0:Contract ,
+                      ns0:Invoice ;
+          rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#postal_costs
+ns0:postal_costs rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Credit ;
+                 rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#postal_costs_of_notification
+ns0:postal_costs_of_notification rdf:type owl:DatatypeProperty ;
+                                 rdfs:domain ns0:Credit ;
+                                 rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#procedure_cost
+ns0:procedure_cost rdf:type owl:DatatypeProperty ;
+                   rdfs:domain ns0:Credit ;
+                   rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#product_type
+ns0:product_type rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Contract ,
+                             ns0:Invoice ;
+                 rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#province
+ns0:province rdf:type owl:DatatypeProperty ;
+             rdfs:domain ns0:City ;
+             rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#province_initials
+ns0:province_initials rdf:type owl:DatatypeProperty ;
+                      rdfs:domain ns0:City ;
+                      rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#province_of_birth
+ns0:province_of_birth rdf:type owl:DatatypeProperty ;
+                      rdfs:domain ns0:Person ;
+                      rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#provincel_costs
+ns0:provincel_costs rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:Credit ;
+                    rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#region
+ns0:region rdf:type owl:DatatypeProperty ;
+           rdfs:domain ns0:Address ;
+           rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#report_number
+ns0:report_number rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Contract ,
+                              ns0:Invoice ;
+                  rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#role_list
+ns0:role_list rdf:type owl:DatatypeProperty ;
+              rdfs:domain ns0:Workload ;
+              rdfs:range xsd:integer .
+
+
+###  http://www.area.it/area#scala
+ns0:scala rdf:type owl:DatatypeProperty ;
+          rdfs:domain ns0:Address ;
+          rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#service_code
+ns0:service_code rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Contract ,
+                             ns0:Invoice ;
+                 rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#street_name
+ns0:street_name rdf:type owl:DatatypeProperty ;
+                rdfs:domain ns0:Address ;
+                rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#street_number
+ns0:street_number rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Address ;
+                  rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#suff
+ns0:suff rdf:type owl:DatatypeProperty ;
+         rdfs:domain ns0:Address ;
+         rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#surname
+ns0:surname rdf:type owl:DatatypeProperty ;
+            rdfs:domain ns0:Person ;
+            rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#surname_name
+ns0:surname_name rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Person ;
+                 rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#tares_increase
+ns0:tares_increase rdf:type owl:DatatypeProperty ;
+                   rdfs:domain ns0:Credit ;
+                   rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#tax
+ns0:tax rdf:type owl:DatatypeProperty ;
+        rdfs:domain ns0:Credit ;
+        rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#tax_year
+ns0:tax_year rdf:type owl:DatatypeProperty ;
+             rdfs:domain ns0:Contract ,
+                         ns0:Invoice ;
+             rdfs:range xsd:integer .
+
+
+###  http://www.area.it/area#text
+ns0:text rdf:type owl:DatatypeProperty ;
+         rdfs:domain ns0:General ;
+         rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#toponym
+ns0:toponym rdf:type owl:DatatypeProperty ;
+            rdfs:domain ns0:Address ;
+            rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#total_amount
+ns0:total_amount rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ns0:Contract ,
+                             ns0:Invoice ;
+                 rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#user_code_workload
+ns0:user_code_workload rdf:type owl:DatatypeProperty ;
+                       rdfs:domain ns0:Company ,
+                                   ns0:Person ;
+                       rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#user_location
+ns0:user_location rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Contract ;
+                  rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#water_consumption
+ns0:water_consumption rdf:type owl:DatatypeProperty ;
+                      rdfs:domain ns0:Contract ;
+                      rdfs:range xsd:float .
+
+
+###  http://www.area.it/area#workload_date
+ns0:workload_date rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Workload ;
+                  rdfs:range xsd:dateTime .
+
+
+###  http://www.area.it/area#workload_number
+ns0:workload_number rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ns0:Workload ;
+                    rdfs:range xsd:string .
+
+
+###  http://www.area.it/area#workload_type
+ns0:workload_type rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ns0:Workload ;
+                  rdfs:range [ rdf:type rdfs:Datatype ;
+                               owl:oneOf [ rdf:type rdf:List ;
+                                           rdf:first "Coattivo" ;
+                                           rdf:rest [ rdf:type rdf:List ;
+                                                      rdf:first "Ordinario" ;
+                                                      rdf:rest rdf:nil
+                                                    ]
+                                         ]
+                             ] .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.area.it/are#Subject
+<http://www.area.it/are#Subject> rdf:type owl:Class .
+
+
+###  http://www.area.it/area#Address
+ns0:Address rdf:type owl:Class .
+
+
+###  http://www.area.it/area#Authority
+ns0:Authority rdf:type owl:Class .
+
+
+###  http://www.area.it/area#City
+ns0:City rdf:type owl:Class .
+
+
+###  http://www.area.it/area#Company
+ns0:Company rdf:type owl:Class ;
+            rdfs:subClassOf <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#Contract
+ns0:Contract rdf:type owl:Class ;
+             rdfs:subClassOf ns0:Invoice .
+
+
+###  http://www.area.it/area#Credit
+ns0:Credit rdf:type owl:Class .
+
+
+###  http://www.area.it/area#General
+ns0:General rdf:type owl:Class .
+
+
+###  http://www.area.it/area#Invoice
+ns0:Invoice rdf:type owl:Class .
+
+
+###  http://www.area.it/area#InvoiceType
+ns0:InvoiceType rdf:type owl:Class .
+
+
+###  http://www.area.it/area#Person
+ns0:Person rdf:type owl:Class ;
+           rdfs:subClassOf <http://www.area.it/are#Subject> .
+
+
+###  http://www.area.it/area#Workload
+ns0:Workload rdf:type owl:Class .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

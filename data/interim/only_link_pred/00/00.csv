@@ -1,0 +1,3 @@
+column_name, class, property, identifier, occurrence
+actor1, dbo:Actor, dbo:birthName, yes, 0
+actor2, dbo:Actor, dbo:birthName, yes, 1
