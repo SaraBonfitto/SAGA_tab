@@ -23,7 +23,7 @@ The possible relations are weighted  using a GNN and structural information of t
 ## General Information
 This repository contains the source code behind the work:
 "A semantic approach for constructing knowledge graphs  from web tables" authored by
-S.Bonfitto, M. DiLeo, S. Gaito, E. Casiraghi, M. Mesiti.
+S.Bonfitto, M. Dileo, S. Gaito, E. Casiraghi, M. Mesiti.
 
 The approach uses a GNN architecture for prediction tasks on knowledge graphs. 
 Specifically, we solved multi-relational link prediction and property detection (i.e. link classification).
