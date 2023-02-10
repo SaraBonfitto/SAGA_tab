@@ -60,8 +60,10 @@ We used a python3 environment
 
 
 ## Usage
-The AUROCs shown in the article can be reproduced through the jupyter notebooks.
-The full approach can be executed using the main.py
-The config.ini file should be checked for changing the dataset.
+The AUROCs shown in the article can be reproduced through the jupyter notebooks. You can find them in the notebooks folder. Specifically, `SAGA_tab-Freebase_RunningExample.ipynb` is a complete running example of multi-relational link prediction task on Freebase KG. This notebook is provided to understand better our ML experiments on a well-known dataset already available on pyg (i.e. avoiding bother the readers with the conversion pipeline from rdf to pyg data), while `SAGA_tab-LinkPrediction.ipynb` is useful primarily to understand how we can process data from RDF to Pyg HeteroData to fed GNNs. 
 
-`write-your-code-here`
+The full approach can be executed via bash using
+
+`$python main.py`
+
+The config.ini file should be checked for changing the dataset or the use of node properties.
