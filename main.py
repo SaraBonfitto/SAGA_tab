@@ -15,6 +15,8 @@ from torch_geometric.data import HeteroData
 import torch
 from torch_geometric.utils import remove_self_loops, remove_isolated_nodes
 from definitions import ROOT_DIR
+import random
+import numpy as np
  
 def data_preprocessing(knowledge, use_properties = False):
     dataset = make_dataset.MakeDataset()
@@ -44,8 +46,13 @@ def model_training(hetero_data):
     root_nodes_types = train_model.get_root_node_types(hetero_data, edge_types)
     rel_to_index = {edge_t:i for edge_t,i in zip(edge_types,range(len(edge_types)))}
     train_link, val_link, test_link = train_model.split_dataset(hetero_data, edge_types)
+    
+    node_types = list(hetero_data.x_dict.keys()) 
+    node_sizes = {} #dictionary with mapping node type: in_channels size. Useful to not use lazy inizialization, #to allow reproducibility
+    for k in node_types:
+        node_sizes[k] = len(hetero_data[k].x[0])
 
-    model, out, optimizer, criterion = train_model.get_model(train_link, rel_to_index, edge_types, root_nodes_types)
+    model, out, optimizer, criterion = train_model.get_model(train_link, rel_to_index, edge_types, root_nodes_types, node_sizes)
     train_model.train_and_save(model, optimizer, criterion, train_link, test_link, rel_to_index, edge_types, root_nodes_types)
 
     roc_train,pred_cont0, toRead_preds0 = train_model.test_hetlinkpre(model, train_link, rel_to_index, edge_types, root_nodes_types, 'all')
@@ -66,6 +73,16 @@ def model_training(hetero_data):
 
 
 def main():
+    #Set all seeds to manual for reproducibility
+    device = torch.device('cuda')
+    torch.manual_seed(0)
+    torch.cuda.manual_seed_all(0)
+    np.random.seed(0)
+    random.seed(0)
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
+    torch.cuda.empty_cache()
+    
     #import config file
     config = configparser.ConfigParser()
     config.read(os.path.join(ROOT_DIR, 'config.ini'))
@@ -128,7 +145,7 @@ def main():
         if i == len(graph_test_clean.edge_index_dict.keys()):
             root_nodes_types[node_type] = graph_test_clean.x_dict[node_type]
     
-    print(graph_test_clean)
+    #print(graph_test_clean)
     #Remove the comment to save the trained model
     #afile = open(ROOT_DIR+config["model"]["pickle_path"]+"edge_types.pkl", 'wb')
     #pickle.dump(edge_types, afile)
@@ -141,21 +158,26 @@ def main():
 
     for edge_t in edge_types:
         if edge_t not in graph_test_clean.edge_index_dict.keys():
-            graph_test_clean[edge_t].edge_index = torch.Tensor([[],[]])
-            graph_test_clean[edge_t].edge_label = torch.Tensor([])
+            graph_test_clean[edge_t].edge_index = torch.Tensor([[],[]]).long()
+            graph_test_clean[edge_t].edge_label = torch.Tensor([]).long()
 
 
     for edge_type in graph_test_clean.edge_index_dict.keys():
         if edge_type[0] == edge_type[2]:
             new_edge_index = remove_self_loops(graph_test_clean[edge_type].edge_index)[0]
-            graph_test_clean[edge_type].edge_index = new_edge_index
-            graph_test_clean[edge_type].edge_label = torch.Tensor([1 for i in range(len(graph_test_clean[edge_type].edge_index[0]))])
+            graph_test_clean[edge_type].edge_index = new_edge_index.long()
+            graph_test_clean[edge_type].edge_label = torch.Tensor([1 for i in range(len(graph_test_clean[edge_type].edge_index[0]))]).long()
     
         new_edge_index = remove_isolated_nodes(graph_test_clean[edge_type].edge_index)[0]
-        graph_test_clean[edge_type].edge_index = new_edge_index
-        graph_test_clean[edge_type].edge_label = torch.Tensor([1 for i in range(len(graph_test_clean[edge_type].edge_index[0]))]) 
+        graph_test_clean[edge_type].edge_index = new_edge_index.long()
+        graph_test_clean[edge_type].edge_label = torch.Tensor([1 for i in range(len(graph_test_clean[edge_type].edge_index[0]))]).long()
+        
+    node_types = list(graph_test_clean.x_dict.keys()) 
+    node_sizes = {} #dictionary with mapping node type: in_channels size. Useful to not use lazy inizialization
+    for k in node_types:
+        node_sizes[k] = len(graph_test_clean[k].x[0])
     
-    pred_cont, toRead_preds = predict_model.test_hetscores2(graph_test_clean, edge_types, root_nodes_types)
+    pred_cont, toRead_preds = predict_model.test_hetscores2(graph_test_clean, edge_types, root_nodes_types, node_sizes)
     additional = 0
     for triple,occ in toRead_preds:
         index = toRead_preds.index((triple,occ))
@@ -175,7 +197,7 @@ def main():
     
     relation_weights = utils.get_weight_for_triples(not_instances, relation_weights)
 
-    pred_cont, toRead_preds = predict_model.test_hetscores2(graph_test_clean, edge_types, root_nodes_types)
+    pred_cont, toRead_preds = predict_model.test_hetscores2(graph_test_clean, edge_types, root_nodes_types, node_sizes)
     additional = 0
     for triple,occ in toRead_preds:
         index = toRead_preds.index((triple,occ))

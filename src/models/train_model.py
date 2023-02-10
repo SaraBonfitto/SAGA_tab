@@ -22,11 +22,18 @@ config = configparser.ConfigParser()
 config.read(os.path.join(ROOT_DIR, 'config.ini'))
 
 class HeteroGNN(torch.nn.Module):
-    def __init__(self, hidden_channels, out_channels, edge_types):
+    def __init__(self, hidden_channels, out_channels, edge_types, node_sizes, root_nodes_types):
         super().__init__()
-        self.conv1 = HeteroConv({edge_t: GATConv((-1, -1),hidden_channels) for edge_t in edge_types})
-        self.conv2 = HeteroConv({edge_t: GATConv((-1, -1),out_channels) for edge_t in edge_types})
-        self.rel_weight = torch.nn.Parameter(torch.randn(len(edge_types), out_channels))
+        g = torch.manual_seed(0)
+        self.node_sizes = node_sizes
+        self.edge_types = edge_types
+        self.root_nodes_types = root_nodes_types
+        self.conv1 = HeteroConv({edge_t: GATConv((node_sizes[edge_t[0]], node_sizes[edge_t[2]]),
+                                                 hidden_channels,add_self_loops=False) for edge_t in edge_types})
+        self.conv2 = HeteroConv({edge_t: GATConv((hidden_channels if edge_t[0] not in root_nodes_types else node_sizes[edge_t[0]],
+                                                  hidden_channels),
+                                                 out_channels,add_self_loops=False) for edge_t in edge_types})
+        self.rel_weight = torch.nn.Parameter(torch.randn(len(edge_types), out_channels, generator=g))
 
     def forward(self, x_dict, edge_index_dict, data, rel_to_index, edge_types, root_nodes_types):
         
@@ -64,9 +71,9 @@ class HeteroGNN(torch.nn.Module):
         return pred_dict
 
 
-def get_model(train_link, rel_to_index, edge_types, root_nodes_types):
+def get_model(train_link, rel_to_index, edge_types, root_nodes_types, node_sizes):
     model = HeteroGNN(hidden_channels=4, out_channels=2, 
-                    edge_types=edge_types)  
+                    edge_types=edge_types, root_nodes_types = root_nodes_types, node_sizes=node_sizes)  
          
     with torch.no_grad():  # Initialize lazy modules.
         out = model(train_link.x_dict,train_link.edge_index_dict, train_link,rel_to_index, edge_types, root_nodes_types)

@@ -10,18 +10,21 @@ config = configparser.ConfigParser()
 config.read(os.path.join(ROOT_DIR, 'config.ini'))
 
 class HeteroGNN(torch.nn.Module):
-    def __init__(self, hidden_channels, out_channels, edge_types, root_nodes_types):
+    def __init__(self, hidden_channels, out_channels, edge_types, node_sizes, root_nodes_types):
         super().__init__()
-        self.conv1 = HeteroConv({edge_t: GATConv((-1, -1),hidden_channels) for edge_t in edge_types})
-        self.conv2 = HeteroConv({edge_t: GATConv((-1, -1),out_channels) for edge_t in edge_types})
-        self.rel_weight = torch.nn.Parameter(torch.randn(len(edge_types), out_channels))
-        self.hidden_channels = hidden_channels
-        self.out_channels = out_channels
-
+        g = torch.manual_seed(0)
+        self.node_sizes = node_sizes
+        self.edge_types = edge_types
+        self.root_nodes_types = root_nodes_types
+        self.conv1 = HeteroConv({edge_t: GATConv((node_sizes[edge_t[0]], node_sizes[edge_t[2]]),
+                                                 hidden_channels,add_self_loops=False) for edge_t in edge_types})
+        self.conv2 = HeteroConv({edge_t: GATConv((hidden_channels if edge_t[0] not in root_nodes_types else node_sizes[edge_t[0]],
+                                                  hidden_channels),
+                                                 out_channels,add_self_loops=False) for edge_t in edge_types})
+        self.rel_weight = torch.nn.Parameter(torch.randn(len(edge_types), out_channels, generator=g))
+        
     def forward(self, x_dict, edge_index_dict, data, rel_to_index, edge_types, root_nodes_types):
         #print("In forward test")
-        print("x_dict", x_dict)
-        print("edge_index_dict", edge_index_dict)
         x_dict = self.conv1(x_dict, edge_index_dict)
 
         for t,v in root_nodes_types.items():
@@ -57,8 +60,8 @@ class HeteroGNN(torch.nn.Module):
         return pred_dict
 
 
-def set_model(edge_types, root_nodes_types):
-    model = HeteroGNN(hidden_channels=4, out_channels=2, edge_types=edge_types, root_nodes_types=root_nodes_types)       
+def set_model(edge_types, root_nodes_types, node_sizes):
+    model = HeteroGNN(hidden_channels=4, out_channels=2, edge_types=edge_types, root_nodes_types=root_nodes_types, node_sizes=node_sizes)       
     model.load_state_dict(torch.load(ROOT_DIR+config['model']['path']))
     return model
 
@@ -100,17 +103,17 @@ def test_hetscores(model, data, rel_to_index, edge_types, root_node_types):
     
     return pred_cont, toRead_preds
 
-def get_relations_weights(test_data, hetero, root_nodes_types):
+def get_relations_weights(test_data, hetero, root_nodes_types, node_sizes):
     edge_types = list(hetero.edge_index_dict.keys())
     rel_to_index = {edge_t:i for edge_t,i in zip(edge_types,range(len(edge_types)))}
-    model = set_model(edge_types, root_nodes_types)
+    model = set_model(edge_types, root_nodes_types, node_sizes)
     weight = test_hetscores(model, hetero, rel_to_index)[0]
     #nella sd non possono esserci archi mai visti nel training
 
     return weight
     
-def test_hetscores2(test_graph, edge_types, root_nodes_types):
-    model = set_model(edge_types, root_nodes_types)
+def test_hetscores2(test_graph, edge_types, root_nodes_types, node_sizes):
+    model = set_model(edge_types, root_nodes_types, node_sizes)
     model.eval()
     rel_to_index = {edge_t:i for edge_t,i in zip(edge_types,range(len(edge_types)))}
     hs_dict = model(test_graph.x_dict, test_graph.edge_index_dict, test_graph, rel_to_index, edge_types, root_nodes_types)
