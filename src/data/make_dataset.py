@@ -81,6 +81,7 @@ class MakeDataset():
 
 
     def get_possible_types(self,subj_type, obj_type):
+        
         if (subj_type,obj_type) not in self.possible_types:
             range_list = self.config["ontology"]["range"].split(",")
             domain_list = self.config["ontology"]["domain"].split(",")
@@ -143,9 +144,9 @@ class MakeDataset():
         self.properties_and_type = new_properties_and_types
 
     def disambiguate_multiple_types(self, s,p,o): 
-        for subtype_subj in self.entities_and_type[str(s)]:
-            if len(self.entities_and_type[str(o)]) > 1:
-                for subtype_obj in self.entities_and_type[str(o)]:
+        for subtype_subj in self.entities_and_type[s]:
+            if len(self.entities_and_type[o]) > 1:
+                for subtype_obj in self.entities_and_type[o]:
                     possible_rels = self.get_possible_types( subtype_subj, subtype_obj)
 
                     if len(possible_rels) == 0:
@@ -155,7 +156,7 @@ class MakeDataset():
                         if rel == p:
                             return (subtype_subj,subtype_obj)
             else:
-                subtype_obj = self.entities_and_type[str(o)][0]
+                subtype_obj = self.entities_and_type[o][0]
                 possible_rels = self.get_possible_types(subtype_subj, subtype_obj)
                 if len(possible_rels) == 0:
                         continue
@@ -203,7 +204,7 @@ class MakeDataset():
                     #if the subject or object type are multiple, it chooses only one, moreover it removes the relations not
                     #compliant with the structure of the ontology
                     if len(self.entities_and_type[str_s]) > 1 or len(self.entities_and_type[str_o]) > 1:
-                        new_subj_type, new_obj_type = self.disambiguate_multiple_types(s,p,o)
+                        new_subj_type, new_obj_type = self.disambiguate_multiple_types(str_s,str_p,str_o)
                         if((new_subj_type, new_obj_type) == ("","") 
                             or new_subj_type == "" 
                             or new_obj_type ==""):
@@ -311,17 +312,7 @@ class MakeDataset():
                 
                 #data[s_type, p, o_type].edge_index[0].append(entities.index(str(s)))
                 #data[s_type, p, o_type].edge_index[1].append(entities.index(str(o)))
-        
     
-        with open('subject.txt', 'w') as f:
-            for key, value in subject_dict.items(): 
-                f.write('%s:%s\n' % (key, value))
-        
-            
-        with open('object.txt', 'w') as f:
-            for key, value in object_dict.items(): 
-                f.write('%s:%s\n' % (key, value))
-        
         return subject_dict, object_dict, self.properties_and_type
 
     
